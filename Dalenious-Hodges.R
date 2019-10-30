@@ -7,7 +7,7 @@ rm(list=ls())
 
 #Cargamos fichero
 
-modelerData <- read_excel("//ficheros/Estudios_Marketing/ESTRATEGICO-OPERATIVO-CUSTOMER/OPERATIVO/Modeler/17. Modelo de datos Beneficiario/0. Fichero de Datos/GSD_muestra.xlsx")
+modelerData <- read_excel("ruta/GSD_muestra.xlsx")
 
 #Preparamos la variable
 
@@ -15,12 +15,12 @@ modelerData$inmi_tot <-  (modelerData$nac_tot_ex/modelerData$nac_tot_po)*1000
 
 head(modelerData$inmi_tot)
 
-#Aplicamos función Dalenious Hodges
+#Aplicamos funciÃ³n Dalenious Hodges
 
 segment1 <- strata.cumrootf(modelerData$inmi_tot, n = length(modelerData$inmi_tot), Ls=5)
 
 
-#Creamos un vector para guardar la segmentación
+#Creamos un vector para guardar la segmentaciÃ³n
 
 Segmento_inmig_total <- vector(length = length(modelerData$inmi_tot))
 
@@ -44,7 +44,7 @@ for (i in 1:length(modelerData$inmi_tot)){
   }
 }
 
-#Con las siguientes dos líneas podemos comprobar qué proporción es igual a la segmentación
+#Con las siguientes dos lÃ­neas podemos comprobar quÃ© proporciÃ³n es igual a la segmentaciÃ³n
 #realizada en Excel.
 
 ####################################################
