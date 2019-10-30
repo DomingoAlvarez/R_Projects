@@ -8,13 +8,13 @@ library(xlsx)
 
 #register_google(key = "mQkzTpiaLYjPqXQBotesgif3EfGL2dbrNVOrogg") (Esto es una key falsa)
 
-Codigo_Postal <- read_excel("Z:/ESTRATEGICO-OPERATIVO-CUSTOMER/OPERATIVO/Modeler/17. Modelo de datos Beneficiario/0. Fichero de Datos/Codigo_Postal_Google.xlsx")
+Codigo_Postal <- read_excel("ruta/Codigo_Postal_Google.xlsx")
 
-#Necesitamos las coordenadas de los cp seg鷑 Googleapis. Para ello primero debemos obtener una key en google
-#Si buscamos en la documentaci髇 de geocode, podemos ir a la web https://cloud.google.com/docs/authentication/api-keys#securing_an_api_key
+#Necesitamos las coordenadas de los cp seg煤n Googleapis. Para ello primero debemos obtener una key en google
+#Si buscamos en la documentaci贸n de geocode, podemos ir a la web https://cloud.google.com/docs/authentication/api-keys#securing_an_api_key
 #obtener una key y una vez registrada podremos usar geocode("CP + Localidad + Provincia") para obtener las coordenadas
 
-#Creamos una matriz vac韆 con 4 columnas y tantas filas como C骴igos Postales
+#Creamos una matriz vac铆a con 4 columnas y tantas filas como C贸digos Postales
 
 x <- matrix(ncol = 4, nrow = dim(Codigo_Postal)[1])
 
@@ -44,13 +44,13 @@ as.double(Codigo_Postal_Google$GoogleLat)
 as.double(Codigo_Postal_Google$GoogleLon)
 
 #Creamos un nuevo excel con todo
-write_excel_csv(Codigo_Postal_Google, path  = "Z:/ESTRATEGICO-OPERATIVO-CUSTOMER/OPERATIVO/Modeler/17. Modelo de datos Beneficiario/0. Fichero de Datos/Codigo_Postal_Google.csv")
+write_excel_csv(Codigo_Postal_Google, path  = "ruta/Codigo_Postal_Google.csv")
 
 #
-#El siguiente c骴igo me va a dar la matriz diagonal con el cp m醩 cercano
+#El siguiente c贸digo me va a dar la matriz diagonal con el cp m谩s cercano
 #He usado el dataframe modelerData que nos da Modeler
 
-modelerData <- read_excel("//ficheros/Estudios_Marketing/ESTRATEGICO-OPERATIVO-CUSTOMER/OPERATIVO/Modeler/17. Modelo de datos Beneficiario/0. Fichero de Datos/Codigo_Postal_Google.xlsx")
+modelerData <- read_excel("ruta/Codigo_Postal_Google.xlsx")
 
 LonLat <- cbind(as.double(modelerData$GoogleLon),as.double(modelerData$GoogleLat))
 
@@ -65,24 +65,24 @@ colnames(newdata) <- c(colnames(modelerData),'codigopostalid_mascercano','poblac
 
 
 
-#Dado el resultado de caracterizaci髇 persona y una tabla con los hospitales p鷅licos
+#Dado el resultado de caracterizaci贸n persona y una tabla con los hospitales p煤blicos
 #y privados. 
 #
 
 rm(list=ls())
 
-modelerData <- read_excel("//ficheros/Estudios_Marketing/ESTRATEGICO-OPERATIVO-CUSTOMER/OPERATIVO/Modeler/17. Modelo de datos Beneficiario/0. Fichero de Datos/Codigo_Postal_Google.xlsx")
+modelerData <- read_excel("ruta/Codigo_Postal_Google.xlsx")
 
 
-hospitales_publicos <- read_excel("//ficheros/Estudios_Marketing/ESTRATEGICO-OPERATIVO-CUSTOMER/OPERATIVO/Modeler/17. Modelo de datos Beneficiario/0. Fichero de Datos/GSD_2019 Y CENTROS MEDICOS/hospitales_publicos.xlsx")
+hospitales_publicos <- read_excel("ruta/hospitales_publicos.xlsx")
 
 
-hospitales_privados <- read_excel("//ficheros/Estudios_Marketing/ESTRATEGICO-OPERATIVO-CUSTOMER/OPERATIVO/Modeler/17. Modelo de datos Beneficiario/0. Fichero de Datos/GSD_2019 Y CENTROS MEDICOS/hospitales_privados.xlsx")
+hospitales_privados <- read_excel("ruta/hospitales_privados.xlsx")
 
 #
 #
 #
-#Hospitales P鷅licos
+#Hospitales P煤blicos
 vec_postal <- vector(length = dim(modelerData)[1])  
 vec_distancia <- vector(length = dim(modelerData)[1])  
 for(i in 1926:dim(modelerData)[1]){
@@ -103,7 +103,7 @@ distkm <- vec_distancia/1000
 modelerData <- cbind(modelerData,hospitales_publicos[vec_postal,])
 modelerData <- cbind(modelerData,distkm)
   
-write.csv2(modelerData, file = "//ficheros/Estudios_Marketing/ESTRATEGICO-OPERATIVO-CUSTOMER/OPERATIVO/Modeler/17. Modelo de datos Beneficiario/0. Fichero de Datos/GSD_2019 Y CENTROS MEDICOS/CP_hosp_publicos.csv")
+write.csv2(modelerData, file = "ruta/CP_hosp_publicos.csv")
 
 #
 #
@@ -129,5 +129,5 @@ distkm <- vec_distancia/1000
 modelerData <- cbind(modelerData,hospitales_privados[vec_postal,])
 modelerData <- cbind(modelerData,distkm)
 
-write.csv2(modelerData, file = "//ficheros/Estudios_Marketing/ESTRATEGICO-OPERATIVO-CUSTOMER/OPERATIVO/Modeler/17. Modelo de datos Beneficiario/0. Fichero de Datos/GSD_2019 Y CENTROS MEDICOS/CP_hosp_privados.csv")
+write.csv2(modelerData, file = "ruta/CP_hosp_privados.csv")
 
