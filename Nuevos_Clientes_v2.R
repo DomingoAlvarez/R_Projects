@@ -5,13 +5,13 @@ rm(list = ls())
 options(scipen = 9999)
 #Cargar datos
 
-datos <- read.csv2("//ficheros/Estudios_Marketing_Operativo/Modeler/33._Venta_Cruzada/2._Resultados/RNuevosClientes/salida1.csv",sep= ";")
+datos <- read.csv2("ruta/salida1.csv",sep= ";")
 
 #Todo a TRUE
 
 datos$Nuevos_Clientes[1] <- "T"
 
-#Separo los titulares con más de una póliza
+#Separo los titulares con mÃ¡s de una pÃ³liza
 
 titulares_0 <- datos %>% group_by(Cod_Titular_Poliza)%>% tally() %>% filter(n ==1) # una poliza
 
@@ -35,7 +35,7 @@ emision <- as.POSIXct(datos_1$Fecha_Emision_Poliza, format= "%Y-%m-%d", tz="UTC"
 
 anulacion <- as.POSIXct(datos_1$Fecha_Anulacion, format= "%Y-%m-%d", tz="UTC")
 
-#La primera póliza a TRUE las demás a FALSE
+#La primera pÃ³liza a TRUE las demÃ¡s a FALSE
 
 for (t in 2:nrow(datos_1)) {
   
@@ -56,13 +56,13 @@ for(b in 1:length(emision_na)){
   emision[emision_na[b]] <- emision[emision_na[b]-1]
 }
 
-#Defino vector con índices
+#Defino vector con Ã­ndices
 vec <- vector(length = nrow(datos_1)) 
 vec <- which(datos_1$Nuevos_Clientes == "T")
 
 vec[length(vec)+1] <- nrow(datos_1)+1
 
-#Creo una función para calcular el máximo de las anulaciones anteriores
+#Creo una funciÃ³n para calcular el mÃ¡ximo de las anulaciones anteriores
 
 max_anula <- function( q, w) {
   
@@ -78,7 +78,7 @@ max_anula <- function( q, w) {
   return(maxi)
 }
 
-#Creo una función para calcular el máximo de las anulaciones anteriores considerando NA's
+#Creo una funciÃ³n para calcular el mÃ¡ximo de las anulaciones anteriores considerando NA's
 
 max_anula_na <- function( q, w) {
   
@@ -94,7 +94,7 @@ max_anula_na <- function( q, w) {
   return(maxi)
 }
 
-#Recorre las pólizas
+#Recorre las pÃ³lizas
 s <- 1
 for (h in vec){
   s <- s+1
@@ -123,14 +123,14 @@ for (h in vec){
           datos_1$Nuevos_Clientes[i]<- "F" #Como hay una arriba "Activa" todos los de abajo "F"
         }
           
-        break #rompe el bucle ya no tengo que mirar más pólizas de este titular
+        break #rompe el bucle ya no tengo que mirar mÃ¡s pÃ³lizas de este titular
           
       } else if (emision[i]<=anulacion[i-1]){
         
         datos_1$Nuevos_Clientes[i]<- "F"
       }
       
-      else if (as.numeric(emision[i])<= max_anula(i-1, h)){ #Compruebo que la fecha más reciente de las anulaciones anteriores
+      else if (as.numeric(emision[i])<= max_anula(i-1, h)){ #Compruebo que la fecha mÃ¡s reciente de las anulaciones anteriores
         #es mayor que la fecha de emision de la poliza
         datos_1$Nuevos_Clientes[i]<- "F" 
       } else 
@@ -142,11 +142,6 @@ for (h in vec){
 
 datos <- rbind(datos_1,datos_0)
 
-write.csv2(datos, file= "//ficheros/Estudios_Marketing_Operativo/Modeler/33._Venta_Cruzada/2._Resultados/RNuevosClientes/La108NC.csv")
-
-#write.csv2(datos, file= "C:/Users/alvarezp/Desktop/La108NC.csv")
-
-
-
+write.csv2(datos, file= "ruta/La108NC.csv")
 
 q()
